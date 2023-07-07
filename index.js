@@ -31,6 +31,8 @@ async function run() {
     for (const i in contributors.data) {
       contributors_list.push(contributors.data[i]['login']);
     }
+    console.log('Existing contributors list:')
+    console.log(contributors_list)
   }
 
   // Get commit authors
@@ -69,6 +71,8 @@ async function run() {
       console.log('- ' + username + ' ✓ (@canonical.com account)');
       commit_authors[i]['signed'] = true;
       continue
+    } else {
+      console.log('WARNING: ' + username + ' does not have a canonical.com email')
     }
     if (email.endsWith('@mozilla.com')) {
       console.log('- ' + username + ' ✓ (@mozilla.com account)');
@@ -80,10 +84,14 @@ async function run() {
       commit_authors[i]['signed'] = true;
       continue
     }
-    if (accept_existing_contributors && contributors_list.includes(username)) {
-      console.log('- ' + username + ' ✓ (already a contributor)');
-      commit_authors[i]['signed'] = true;
-      continue
+    if (accept_existing_contributors) {
+      if contributors_list.includes(username)) {
+        console.log('- ' + username + ' ✓ (already a contributor)');
+        commit_authors[i]['signed'] = true;
+        continue
+      } else {
+        console.log('WARNING: ' + username + ' is not already a contributor')
+      }
     }
 
     await ghCLA.request('GET /orgs/{org}/members/{username}', {
