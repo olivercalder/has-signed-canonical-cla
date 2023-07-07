@@ -56,10 +56,12 @@ async function run() {
   // Check GitHub
   console.log('Checking the following users on GitHub:');
   for (const i in commit_authors) {
+    console.log(commit_authors[i])
     const username = commit_authors[i]['username'];
     const email = commit_authors[i]['email'];
 
     if (!username) {
+      console.log('WARNING: no username on GitHub for email: ' + email)
       continue;
     }
     if (username.endsWith('[bot]') && exemptedBots.includes(username.slice(0, -5))) {
