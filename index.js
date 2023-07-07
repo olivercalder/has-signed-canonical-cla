@@ -85,7 +85,7 @@ async function run() {
       continue
     }
     if (accept_existing_contributors) {
-      if contributors_list.includes(username)) {
+      if (contributors_list.includes(username)) {
         console.log('- ' + username + ' ✓ (already a contributor)');
         commit_authors[i]['signed'] = true;
         continue
